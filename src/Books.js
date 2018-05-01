@@ -2,11 +2,13 @@ import React from 'react'
 
 class Books extends React.Component {
   render(){
+    const isBooksError = this.props.books.error;
     return(
-      this.props.books.map((book) => (
-        <div className="book">
+      isBooksError ? ( <div></div>
+      ): (this.props.books.map((book) => (
+        <div className="book" key={book.id}>
           <div className="book-top">
-            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: 'url(${book.coverURL})' }}></div>
+            <div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
             <div className="book-shelf-changer">
               <select>
                 <option value="none" disabled>Move to...</option>
@@ -18,9 +20,13 @@ class Books extends React.Component {
             </div>
           </div>
           <div className="book-title">{book.title}</div>
-          <div className="book-authors">{book.author}</div>
-        </div>
-      ))
-    )
+          <div className="book-authors">{book.authors}</div>
+        </div>)
+        )))
+    }
+     
+    
   }
-}
+
+
+export default Books
