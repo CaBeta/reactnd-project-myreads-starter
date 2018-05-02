@@ -10,6 +10,7 @@ class SearchBooks extends React.Component{
         BooksAPI.search(query).then((books) => {
             if(books){
                 this.setState({ searchBooks:books });
+                console.log(books);
             }
         })
     }
