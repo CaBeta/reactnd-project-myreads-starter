@@ -15,7 +15,7 @@ class Home extends React.Component {
             this.setState({ currentlyReadingBooks: books.filter((book) => (book.shelf === "currentlyReading")) });
             this.setState({ wantToReadBooks: books.filter((book) => (book.shelf === "wantToRead")) });
             this.setState({ ReadBooks: books.filter((book) => (book.shelf === "read")) });
-            console.log(books);
+            // console.log(books);
         })
     }
     changeBookState = (book, shelf) => {
@@ -24,7 +24,7 @@ class Home extends React.Component {
             this.setState({ currentlyReadingBooks: books.filter((book) => (book.shelf === "currentlyReading")) });
             this.setState({ wantToReadBooks: books.filter((book) => (book.shelf === "wantToRead")) });
             this.setState({ ReadBooks: books.filter((book) => (book.shelf === "read")) });
-            console.log(books);
+            // console.log(books);
         })
     }
     render() {

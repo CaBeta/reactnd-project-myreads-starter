@@ -7,14 +7,34 @@ import * as BooksAPI from './BooksAPI'
 class SearchBooks extends React.Component{
     state = {
         searchBooks: [],
+        booksInShelf: [],
     }
     search = (query) => {
+        if (!query) {
+            this.setState({ searchBooks: [] });
+            return;
+        }
         BooksAPI.search(query).then((books) => {
+            for(let book of books){
+                for(let bookInShelf of this.state.booksInShelf){
+                    if(bookInShelf.id === book.id){
+                        book.shelf = bookInShelf.shelf;
+                    }
+                }
+            }
             if(books){
                 this.setState({ searchBooks:books });
                 console.log(books);
             }
         })
+    }
+    componentDidMount() {
+        BooksAPI.getAll().then((books) => {
+            this.setState({ booksInShelf: books });
+        })
+    }
+    changeBookState(book, shelf){
+        BooksAPI.update(book, shelf);
     }
     render(){
         return(
@@ -27,7 +47,7 @@ class SearchBooks extends React.Component{
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        <Books books={this.state.searchBooks} />
+                        <Books books={this.state.searchBooks} changeBookState={this.changeBookState}/>
                     </ol>
                 </div>
             </div>
