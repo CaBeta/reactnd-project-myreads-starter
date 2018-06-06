@@ -15,14 +15,17 @@ class SearchBooks extends React.Component{
             return;
         }
         BooksAPI.search(query).then((books) => {
-            for(let book of books){
-                for(let bookInShelf of this.state.booksInShelf){
-                    if(bookInShelf.id === book.id){
-                        book.shelf = bookInShelf.shelf;
+            if(books.error) {
+                this.setState({ searchBooks: [] });
+                return;
+            }else{
+                for(let book of books){
+                    for(let bookInShelf of this.state.booksInShelf){
+                        if(bookInShelf.id === book.id){
+                            book.shelf = bookInShelf.shelf;
+                        }
                     }
                 }
-            }
-            if(books){
                 this.setState({ searchBooks:books });
             }
         })
