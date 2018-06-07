@@ -31,12 +31,7 @@ class SearchBooks extends React.Component{
         })
     }
     componentDidMount() {
-        BooksAPI.getAll().then((books) => {
-            this.setState({ booksInShelf: books });
-        })
-    }
-    changeBookState(book, shelf){
-        BooksAPI.update(book, shelf);
+        this.setState({ booksInShelf: this.props.books });
     }
     render(){
         return(
@@ -49,7 +44,7 @@ class SearchBooks extends React.Component{
                 </div>
                 <div className="search-books-results">
                     <ol className="books-grid">
-                        <Books books={this.state.searchBooks} changeBookState={this.changeBookState}/>
+                        <Books books={this.state.searchBooks} changeBookState={this.props.onChangeBookState}/>
                     </ol>
                 </div>
             </div>
