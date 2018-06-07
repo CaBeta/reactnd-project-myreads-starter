@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Books from './Books'
 import * as BooksAPI from './BooksAPI'
+import * as _ from 'lodash';
 
 
 class SearchBooks extends React.Component{
@@ -9,7 +10,7 @@ class SearchBooks extends React.Component{
         searchBooks: [],
         booksInShelf: [],
     }
-    search = (query) => {
+    search = _.debounce(query => {
         if (!query) {
             this.setState({ searchBooks: [] });
             return;
@@ -29,7 +30,7 @@ class SearchBooks extends React.Component{
                 this.setState({ searchBooks:books });
             }
         })
-    }
+    },400)
     componentDidMount() {
         this.setState({ booksInShelf: this.props.books });
     }
