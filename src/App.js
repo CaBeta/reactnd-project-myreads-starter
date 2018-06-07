@@ -32,7 +32,7 @@ class BooksApp extends React.Component {
           this.setState({ wantToReadBooks: this.state.wantToReadBooks.filter((lastBook) => (lastBook.id !== book.id)) });
           break;
         case "read":
-          this.setState({ ReadBooks: this.state.ReadBooks.filter((lastBook) => (lastBook.id !== book.id)) });
+          this.setState({ readBooks: this.state.readBooks.filter((lastBook) => (lastBook.id !== book.id)) });
           break;
         default:
           break;
@@ -47,8 +47,8 @@ class BooksApp extends React.Component {
           this.setState({ wantToReadBooks: this.state.wantToReadBooks });
           break;
         case "read":
-          this.state.ReadBooks.push(book);
-          this.setState({ ReadBooks: this.state.ReadBooks });
+          this.state.readBooks.push(book);
+          this.setState({ readBooks: this.state.readBooks });
           break;
         default:
           break;
