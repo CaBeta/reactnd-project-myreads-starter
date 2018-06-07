@@ -9,10 +9,10 @@ function Books(props){
         <div className="book" >
           <div className="book-top">
             {book.imageLinks ? (<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>):
-              (<div className="book-cover" style={{ width: 128, height: 193}}></div>)}
+            (<div className="book-cover" style={{ width: 128, height: 193, backgroundImage: "url(https://books.google.com/googlebooks/images/no_cover_thumb.gif)"}}></div>)}
             <div className="book-shelf-changer">
-              <select onChange={(event) => props.changeBookState(book, event.target.value)} value={book.shelf ? book.shelf : "none"}>
-                <option value="none" disabled>Move to...</option>
+              <select onChange={(event) => props.changeBookState(book, event.target.value)} value={book.shelf ? book.shelf : "move"}>
+                <option value="move" disabled>Move to...</option>
                 <option value="currentlyReading">Currently Reading</option>
                 <option value="wantToRead">Want to Read</option>
                 <option value="read">Read</option>
