@@ -8,51 +8,34 @@ import Home from './Home'
 class BooksApp extends React.Component {
   state={
     books:[],
-    currentlyReadingBooks: [],
-    wantToReadBooks: [],
-    readBooks: []
   }
   componentDidMount() {
     BooksAPI.getAll().then((books) => {
       this.setState({ books: books });
-      this.setState({ currentlyReadingBooks: books.filter((book) => (book.shelf === "currentlyReading")) });
-      this.setState({ wantToReadBooks: books.filter((book) => (book.shelf === "wantToRead")) });
-      this.setState({ readBooks: books.filter((book) => (book.shelf === "read")) });
     })
   }
   changeBookState = (book, shelf) => {
-    const defaultShelf = book.shelf;
-    book.shelf = shelf;
     BooksAPI.update(book, shelf).then(() => {
-      switch (defaultShelf) {
-        case "currentlyReading":
-          this.setState({ currentlyReadingBooks: this.state.currentlyReadingBooks.filter((lastBook) => (lastBook.id !== book.id)) });
-          break;
-        case "wantToRead":
-          this.setState({ wantToReadBooks: this.state.wantToReadBooks.filter((lastBook) => (lastBook.id !== book.id)) });
-          break;
-        case "read":
-          this.setState({ readBooks: this.state.readBooks.filter((lastBook) => (lastBook.id !== book.id)) });
-          break;
-        default:
-          break;
-      }
-      switch (shelf) {
-        case "currentlyReading":
-          this.state.currentlyReadingBooks.push(book);
-          this.setState({ currentlyReadingBooks: this.state.currentlyReadingBooks });
-          break;
-        case "wantToRead":
-          this.state.wantToReadBooks.push(book);
-          this.setState({ wantToReadBooks: this.state.wantToReadBooks });
-          break;
-        case "read":
-          this.state.readBooks.push(book);
-          this.setState({ readBooks: this.state.readBooks });
-          break;
-        default:
-          break;
-      }
+      this.setState(prevState => {
+        let newBooks;
+
+        // 获取除了当前操作的图书的所有其它图书
+        const restOfBooksInShelf = prevState.books.filter(
+          preBook => preBook.id !== book.id
+        );
+
+        if (shelf !== "none") {
+          // 如果对图书所做的操作不是从书架移除，那么将这本书合并到 restOfBooksInShelf 中并返回一个全新的图书数组
+          book.shelf = shelf;
+          newBooks = restOfBooksInShelf.concat([book]);
+        } else {
+          newBooks = restOfBooksInShelf;
+        }
+        // 更新数据并渲染界面
+        return {
+          books: newBooks
+        };
+      });
     });
   }
   render() {
@@ -60,9 +43,9 @@ class BooksApp extends React.Component {
       <Switch>
         <Route exact path='/' render={() => (
           <Home
-            currentlyReadingBooks={this.state.currentlyReadingBooks}
-            wantToReadBooks={this.state.wantToReadBooks}
-            readBooks={this.state.readBooks}
+            currentlyReadingBooks={this.state.books.filter((book) => (book.shelf === "currentlyReading"))}
+            wantToReadBooks={this.state.books.filter((book) => (book.shelf === "wantToRead"))}
+            readBooks={this.state.books.filter((book) => (book.shelf === "read"))}
             onChangeBookState={this.changeBookState}
           />
         )} />
